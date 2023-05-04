@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final pokemonModel = pokemonModelFromJson(jsonString);
-
 import 'dart:convert';
 
 PokemonModel pokemonModelFromJson(String str) =>
@@ -11,43 +7,43 @@ String pokemonModelToJson(PokemonModel data) => json.encode(data.toJson());
 
 class PokemonModel {
   int count;
-  String next;
-  dynamic previous;
-  List<Result> results;
+  String? next;
+  String? previous;
+  List<PokemonDetail> pokemonDetail;
 
   PokemonModel({
     required this.count,
     required this.next,
     this.previous,
-    required this.results,
+    required this.pokemonDetail,
   });
 
   factory PokemonModel.fromJson(Map<String, dynamic> json) => PokemonModel(
         count: json["count"],
         next: json["next"],
         previous: json["previous"],
-        results:
-            List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+        pokemonDetail: List<PokemonDetail>.from(
+            json["results"].map((x) => PokemonDetail.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "count": count,
         "next": next,
         "previous": previous,
-        "results": List<dynamic>.from(results.map((x) => x.toJson())),
+        "results": List<dynamic>.from(pokemonDetail.map((x) => x.toJson())),
       };
 }
 
-class Result {
+class PokemonDetail {
   String name;
   String url;
 
-  Result({
+  PokemonDetail({
     required this.name,
     required this.url,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory PokemonDetail.fromJson(Map<String, dynamic> json) => PokemonDetail(
         name: json["name"],
         url: json["url"],
       );
