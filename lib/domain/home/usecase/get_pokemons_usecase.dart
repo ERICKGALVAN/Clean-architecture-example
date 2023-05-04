@@ -4,9 +4,7 @@ import 'package:clean_architecture/domain/home/repository/get_pokemons_repositor
 
 class GetPokemonsUseCase {
   final GetPokemonsRepository _pokemonRepository;
-
   GetPokemonsUseCase(this._pokemonRepository);
-
   Future<PokemonModel> getAllPokemons() async {
     const firstPage = ApiConstants.firstPage;
     return await _pokemonRepository.getPokemons(firstPage);

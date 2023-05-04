@@ -1,6 +1,7 @@
 import 'package:clean_architecture/presentation/screens/home/providers/pokemon_provider.dart';
 import 'package:clean_architecture/presentation/screens/home/widgets/change_page_button.dart';
 import 'package:clean_architecture/presentation/screens/home/widgets/name_container.dart';
+import 'package:clean_architecture/presentation/screens/pokemon/pokemon_details_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,8 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class Home extends ConsumerWidget {
   const Home({Key? key}) : super(key: key);
 
-  void _changePage(String? page, WidgetRef ref) async {
-    ref.refresh(pokemonProvider);
+  void _changePage(String? page, WidgetRef ref) {
+    ref.invalidate(pokemonProvider);
     ref.read(currentPage.notifier).update((state) => page!);
   }
 
@@ -31,17 +32,27 @@ class Home extends ConsumerWidget {
         ),
       ),
       body: pokemons.when(
-        data: (data) {
+        data: (pokemon) {
           return SingleChildScrollView(
             child: Column(
               children: [
                 ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: data.pokemonDetail.length,
+                  itemCount: pokemon.pokemonDetail.length,
                   itemBuilder: (context, index) {
-                    return NameContainer(
-                      name: data.pokemonDetail[index].name,
+                    return InkWell(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PokemonDetailsScreen(
+                            currentPokemon: pokemon.pokemonDetail[index],
+                          ),
+                        ),
+                      ),
+                      child: NameContainer(
+                        name: pokemon.pokemonDetail[index].name,
+                      ),
                     );
                   },
                 ),

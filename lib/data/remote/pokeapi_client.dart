@@ -9,10 +9,8 @@ class PokeApiClient extends GetPokemonsRepository {
   @override
   Future<PokemonModel> getPokemons(String url) async {
     final response = await http.get(Uri.parse(url));
-
     if (response.statusCode == 200) {
       final pokemons = pokemonModelFromJson(response.body);
-
       return pokemons;
     } else {
       throw Exception('Failed to load Pokemon list');
